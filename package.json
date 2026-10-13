@@ -1,0 +1,30 @@
+{
+  "name": "seatsync",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "concurrently -n api,web -c cyan,magenta \"npm run dev -w @seatsync/api\" \"npm run dev -w @seatsync/web\"",
+    "build": "npm run build -w @seatsync/shared && npm run build -w @seatsync/api && npm run build -w @seatsync/web",
+    "test": "npm run test -w @seatsync/api && npm run test -w @seatsync/web",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "db:generate": "prisma generate --schema apps/api/prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema apps/api/prisma/schema.prisma",
+    "db:deploy": "prisma migrate deploy --schema apps/api/prisma/schema.prisma",
+    "db:check": "tsx apps/api/src/check-database.ts",
+    "db:seed": "tsx apps/api/prisma/seed.ts",
+    "e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.56.1",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.5.0",
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.46.4"
+  }
+}

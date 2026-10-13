@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: seatsync
+      POSTGRES_PASSWORD: seatsync
+      POSTGRES_DB: seatsync
+    ports:
+      - "5432:5432"
+    volumes:
+      - seatsync_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U seatsync"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  seatsync_data:
+

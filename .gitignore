@@ -49,6 +49,8 @@ ehthumbs.db
 coverage/
 *.lcov
 .nyc_output/
+playwright-report/
+test-results/
 
 # Cache
 .eslintcache

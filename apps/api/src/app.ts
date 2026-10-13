@@ -1,0 +1,20 @@
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+import { config } from './config.js';
+import { optionalAuth } from './auth.js';
+import { errorHandler } from './errors.js';
+import router from './routes.js';
+
+export const app = express();
+app.disable('x-powered-by');
+app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(cors({ origin: config.CLIENT_URL, credentials: true }));
+app.use(express.json({ limit: '32kb' }));
+app.use(cookieParser());
+app.use(optionalAuth);
+app.get('/health', (_req, res) => res.json({ status: 'ok' }));
+app.use('/api', router);
+app.use((_req, res) => res.status(404).json({ message: 'Route not found', code: 'NOT_FOUND' }));
+app.use(errorHandler);
